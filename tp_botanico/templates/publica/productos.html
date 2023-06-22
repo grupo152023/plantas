@@ -1,0 +1,156 @@
+{% extends './base.html' %} 
+
+{%block estilo %} 
+  {% load static %} 
+  <link rel="stylesheet" href="{% static "./publica/css/productos.css" %}?v=1.2"> 
+{% endblock estilo %} 
+
+{% block titulo %}Tienda online{% endblock titulo %}
+
+{%block main %}
+    <a href={% url 'productos' %}>
+	    <button class="btn-lg ver_mas">Todos los Productos</button>
+    </a>
+	<a href={% url 'plantas' %}>
+	    <button class="btn-lg ver_mas">Plantas</button>
+    </a>
+    <a href={% url 'productocaro' %}>
+	    <button class="btn-lg ver_mas">Caras</button>
+    </a>
+	<a href={% url 'productobarato' %}>
+	    <button class="btn-lg ver_mas">Baratas</button>
+    </a>
+ 
+	<form action="#">
+		<label for="lang">Ambiente:</label>
+		<select name="Ambientes" id="lang">
+		  <option value="Todos">Todos</option>
+		  <option value="Sol">Sol</option>
+		  <option value="Sombra">Sombra</option>
+		  <option value="Interior">Interior</option>
+		  <option value="Exterior">Exterior</option>
+		</select>
+		<input type="submit" value="Buscar Planta" />
+    </form>
+
+	<section class="contenedor">
+		<!-- Contenedor de los productos-->
+		<div class="contenedor-items">
+			{%for producto in productos%}
+				<div class="item">
+					<span class="titulo-item">{{producto.nombre}}</span>
+					<img src= {{producto.imagen.url}} alt="imagen del producto {{producto.titulo}}" class="img-item">
+					<span class="precio-item">$ {{producto.precio}}</span>
+					<span class="Stocky"> Stock: {{producto.stock}}</span><br>
+					<span class="Amb"> Ambiente: {{producto.ambiente}}</span>
+
+					<a href="{% url 'carrito:agregar' producto.id %}" class="boton-item">Agregar al carrito</a>
+				</div>			
+			{%endfor%}			
+		</div>
+
+		<!-- Carrito de compras -->
+		<div class="carrito">
+			<div class="header-carrito">
+				<h2>Tu carrito</h2>
+			</div>
+
+			{%if request.session.carrito.items %}
+						{%for key, value in request.session.carrito.items%}
+						<tr>
+							<div class="carrito-item">
+								<img src= {{value.imagen}}  alt="" width="80px">
+								<div class="carrito-item-detalle">
+									<span class="carrito-item-titulo">{{value.nombre}}</span>
+									<div class="selector-cantidad">
+										<a href="{% url 'carrito:restar' value.producto_id %}"><i class="fa-solid fa-minus restar-cantidad"></i></a>
+										<input type="text" value="{{value.cantidad}}" class="carrito-item-cantidad" disabled>
+										<a href="{% url 'carrito:agregar' value.producto_id %}"><i class="fa-solid fa-plus"></i></a>
+									</div>
+									<span class="carrito-item-precio">{{value.precio}}</span>
+								</div>
+								<a href="{% url 'carrito:eliminar' value.producto_id %}"><span class="btn-eliminar"><i class="fa-solid fa-trash"></i></span></a>
+							</div>
+						</tr>
+						{%endfor%}
+				{% else %}
+						<div class="alert alert-danger text-center m-1">
+							Sin productos
+						</div>
+				{%endif%}
+			<div class="carrito-items">
+				<!--
+				<div class="carrito-item">
+					<img src={% static './publica/img/planta8.avif' %}  alt="" width="80px">
+					<div class="carrito-item-detalle">
+						<span class="carrito-item-titulo">nombre de producto</span>
+						<div class="selector-cantidad">
+							<i class="fa-solid fa-minus restar-cantidad"></i>
+							<input type="text" value="1" class="carrito-item-cantidad" disabled>
+							<i class="fa-solid fa-plus sumar-cantidad"></i>
+						</div>
+						<span class="carrito-item-precio">$11.111</span>
+					</div>
+					<span class="btn-eliminar"><i class="fa-solid fa-trash"></i></span>
+				</div>
+				-->
+			</div>
+
+			<div class="carrito-total">
+				<div class="fila">
+					<!--<strong>Total</strong>
+					 <span class="carrito-precio-total">$ {{producto.precio}}</span>  -->
+					<span class="precio-item">Total $ </span>
+				</div>
+				<button class="btn-pagar">Pagar<i class="fa-solid fa-bag-shopping"></i></button>
+
+			</div>
+		</div>
+		
+		<!-- Carrito de compras prueba
+		<div class="carrito2">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th colspan="3" class="text-center">
+							Carrito de compras
+						</th>
+					</tr>
+					<tr>
+						<th>Producto</th>
+						<th>Cantidad</th>
+						<th>Precio</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{%if request.session.carrito.items %}
+						{%for key, value in request.session.carrito.items%}
+						<tr>
+							<td>{{value.nombre}}</td>
+							<td>{{value.precio}}</td>
+						</tr>
+						{%endfor%}
+					{% else %}
+					<tr>
+						<td colspan=3>
+							<div class="alert alert-danger text-center">
+								Sin producto
+							</div>
+						</td>
+					</tr>
+					{% endif %}
+
+				</tbody>
+	
+			</table>
+		</div>
+		-->
+
+	</section>
+
+{% endblock main %}
+
+{% block jsScript %}
+<script src="{% static './publica/js/producto.js' %}?v=1.1"></script>
+{% endblock jsScript %}

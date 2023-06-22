@@ -1,0 +1,29 @@
+{% extends './baseLoginRegistro.html' %} 
+{% block formLoginRegistro %}
+{% load static %} 
+<div class="registro-box">
+	<div class="registro">
+		<img class="avatar" src="{% static "./publica/img/logo.png"%}" alt="">
+		<h1>Crear nuevo usuario</h1>
+		<form method="POST" action="">
+			{% csrf_token %}
+			{%for campo in form%}
+				<div class="mt-2">
+					<div>
+						<label for="{{campo.name}}">{{campo.label}}:</label>
+						{{campo}}													
+					</div>
+					<div class="msj-error">{{campo.errors}}</div>
+				</div>
+			{%endfor%}
+					
+			<input type="submit" value="REGISTRARME">
+		</form>
+	</div>
+	
+</div>
+{% endblock formLoginRegistro %}
+
+{% block jsScript %}
+<script src="{% static './login-registro/js/registro.js' %}?v=1.1"></script>
+{% endblock jsScript %}

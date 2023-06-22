@@ -1,0 +1,19 @@
+{% extends './base.html' %} 
+{% load humanize %}
+{%block estilo %} 
+  {% load static %} 
+  <link rel="stylesheet" href="{% static "./publica/css/club.css" %}?v=1.2">   
+{% endblock estilo %} 
+{% block titulo %}Crear nuevo post{% endblock titulo %}
+
+{%block main %}
+	<div class="principal">
+		<form action="" method="POST">
+			{% csrf_token %}
+			{{form}}
+			<button type="submit">Post</button>
+		</form>
+	</div>
+
+
+{% endblock main%}

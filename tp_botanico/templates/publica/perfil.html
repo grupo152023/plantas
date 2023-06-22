@@ -1,0 +1,60 @@
+{% extends './base.html' %} 
+{% load humanize %}
+{%block estilo %} 
+  {% load static %} 
+  <link rel="stylesheet" href="{% static "./publica/css/club.css" %}?v=1.2">   
+{% endblock estilo %} 
+{% block titulo %}Perfil{% endblock titulo %}
+
+{%block main %}
+
+	<div class="principal">
+		<div class="profile">
+			<img src="{{user.perfil.imagen.url}}">
+			<h2>{{user.username}}</h2>
+			{% if request.user.is_authenticated %}
+				{% if user.username !=  request.user.username %}
+					{% if user not in request.user.perfil.seguidores %}
+						<a class="follow-button" href="{% url 'seguir' user %}"><button>Seguir</button></a>
+					{% else %}
+					<a class="follow-button" href="{% url 'noseguir' user %}"><button>Siguiendo</button></a>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			
+		</div>
+
+		<!-- Follow items -->
+		<div class="follow">
+			<div>
+				<h5>Post</h5>
+				<p>{{user.post.count}}</p>
+			</div>
+			<div>
+				<h5>Seguidos</h5>
+				<p>{{user.perfil.seguidores.count}}</p>
+
+			</div>
+			<div>
+				<h5>Seguidores</h5>
+				<p>{{user.perfil.seguidos.count}}</p>
+			</div>
+		</div>
+
+		{% for post in posts %}
+			<article>
+				<div class="container-article">
+					<img src= "{{post.user.perfil.imagen.url}}" alt="imagen de perfil de {{post.user.username}}">
+					<div>
+						<h2 class="username"><a href="{% url 'perfil' %}/{{post.user.username}}">{{post.user.username}}</a></h2>
+						<i class="clock"></i>
+						<time data-time="#">{{post.fechaPost|naturaltime}}</time>
+						<div class="post">{{post.contenido}}</div>
+					</div>
+				</div>
+			</article>
+		{% endfor %}
+	</div>
+
+{% endblock main%}
+

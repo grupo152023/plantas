@@ -1,0 +1,41 @@
+{% extends './base.html' %} 
+{%block estilo %} 
+  {% load static %} 
+  <link rel="stylesheet" href="{% static "./publica/css/contacto.css" %}?v=1.2">   
+{% endblock estilo %} 
+
+{% block titulo %}Contacto{% endblock titulo %}
+
+{%block main %}
+	<div class="contenedor-contacto">
+		<div class="contacto-caja">
+			<div class="caja-izq"></div>
+			<div class="caja-der">
+				<h2>Contacto</h2>
+				<form novalidate id="contacto-form" action="" method="post">
+					{% csrf_token %}
+   					{%for campo in formContacto%}
+					   <div>
+							<div>
+								{{campo}}													
+							</div>
+							<div class="msj-error">{{campo.errors}}</div>
+						</div>
+					{%endfor%}
+					<button class="contacto-enviar">Enviar</button>					
+				</form>	
+				<div>					
+					{%for message in messages%}
+						<div class="mt-2 alert alert-info" role="alert">
+							{{message}}
+						</div>
+					{%endfor%}
+				</div>			
+			</div>
+		</div>
+	</div>	
+{% endblock main %}
+
+{% block jsScript %}
+<script src="{% static './publica/js/contacto.js' %}?v=1.1"></script>
+{% endblock jsScript %}

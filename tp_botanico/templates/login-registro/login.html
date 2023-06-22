@@ -1,0 +1,30 @@
+{% extends './baseLoginRegistro.html' %} 
+{% block formLoginRegistro %}
+{% load static %} 
+<div class="login-box">
+	<img class="avatar" src="{% static "./publica/img/logo.png"%}" alt="">
+	<h1>Iniciar sesión</h1>
+	
+	<form method="post" action="">
+		{% csrf_token %}
+		{%for campo in form%}
+			<div>
+				<div>
+					<label for="{{campo.name}}">{{campo.label}}</label>
+					{{campo}}													
+				</div>
+				<div class="msj-error">{{campo.errors}}</div>
+			</div>
+		{%endfor%}
+		<input type="submit" value="INICIAR">
+
+		<a href="{% url 'password_reset' %}">¿Has olvidado tu contraseña?</a><br>
+		<a href="{% url 'registro' %}">Crear una cuenta</a>
+	</form>
+	{%for message in messages%}
+		<div class="mt-2 alert alert-danger" role="alert">
+			{{message}}
+		</div>
+	{%endfor%}
+</div>
+{% endblock formLoginRegistro %}

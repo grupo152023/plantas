@@ -1,0 +1,35 @@
+{% extends './base.html' %} 
+{% load humanize %}
+{%block estilo %} 
+  {% load static %} 
+  <link rel="stylesheet" href="{% static "./publica/css/club.css" %}?v=1.2">   
+{% endblock estilo %} 
+{% block titulo %}Club{% endblock titulo %}
+
+{%block main %}
+
+<div class="principal">
+	<nav class="second-nav">
+		<a class="new" href="{% url 'crearpost' %}">Crear nuevo post</a>
+	</nav>
+	
+	{% for post in posts %}
+		<article>
+			<div class="container-article">
+				<img src= "{{post.user.perfil.imagen.url}}" alt="imagen de perfil de {{post.user.username}}">
+				<div>
+					<h2 class="username"><a href="{% url 'perfil' %}/{{post.user.username}}">{{post.user.username}}</a></h2>
+					<i class="clock"></i>
+					<time data-time="#">{{post.fechaPost|naturaltime}}</time>
+					<div class="post">{{post.contenido}}</div>
+				</div>
+			</div>
+		</article>
+	{% endfor %}
+
+</div>
+
+
+
+
+{% endblock main%}
